@@ -1,0 +1,146 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\SparepartController;
+use App\Http\Controllers\JasaServisController;
+use App\Http\Controllers\RiwayatController;
+use App\Http\Controllers\DashboardController;
+use App\Models\Kendaraan;
+use App\Models\Karyawan;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\PelangganLoginController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+
+Route::get('/pelanggan/register', [RegisteredUserController::class, 'create'])
+    ->name('pelanggan.register');
+
+Route::post('/pelanggan/register', [RegisteredUserController::class, 'store']);
+
+Route::get('/pelanggan/login', [PelangganLoginController::class, 'showLoginForm'])
+    ->name('pelanggan.login');
+
+Route::post('/pelanggan/login', [PelangganLoginController::class, 'login']);
+
+Route::post('/pelanggan/logout', [PelangganLoginController::class, 'logout'])
+    ->name('pelanggan.logout');
+
+Route::middleware('pelanggan')->group(function () {
+    Route::get('/pelanggan/dashboard', function () {
+        return view('dashboard.index');
+    })->name('pelanggan.dashboard');
+});
+
+Route::get('/', function () {
+    $karyawans = Karyawan::all(); // Ambil semua data dari tabel karyawans
+    return view('welcome', compact('karyawans')); // Kirim ke view
+})->name("welcome");
+
+Route::get('/unggulan', function () {
+    return view('unggulan');
+})->name("unggulan");
+Route::get('/layanan', action: function () {
+    return view('layanan');
+})->name("layanan");
+Route::get("/maps", function () {
+    return view("maps");
+})->name("maps");
+Route::get("/about", function () {
+    return view("about");
+})->name("about");
+
+
+
+//Riwayad
+Route::get('/riwayat/create/{id}', [RiwayatController::class, 'create1'])->name('riwayats.create1');
+Route::post('/riwayat/store', [RiwayatController::class, 'store'])->name('riwayats.store');
+Route::post('/riwayat/store', [RiwayatController::class, 'store1'])->name('riwayats.store');
+
+
+//BOoking
+Route::resource('booking', BookingController::class)->middleware('auth');
+Route::put('/booking/{no_urut}', [BookingController::class, 'update'])->name('booking.update');
+Route::get('/cek-jadwal', [BookingController::class, 'cekJadwal']);
+Route::get('/check-availability', [BookingController::class, 'checkAvailability']);
+Route::get('/get-kendaraan', [BookingController::class, 'getKendaraanByPelanggan']);
+Route::patch('/booking/{id}/update-status/{status}', [BookingController::class, 'updateStatus'])->name('booking.update_status');
+Route::get('/booking/antrian-by-jam', [BookingController::class, 'getAntrianByJam']);
+
+
+//jaservsis
+Route::resource('jasa_servis', JasaServisController::class)->middleware('auth');
+
+
+//Sperpat
+Route::resource('sparepart', SparepartController::class)->middleware('auth');
+
+
+//Karyawan
+Route::resource('karyawan', KaryawanController::class)->middleware('auth');
+
+
+//Kendaraan
+Route::resource('kendaraan', KendaraanController::class)->middleware('auth');
+Route::get('/kendaraan', [KendaraanController::class, 'index'])->name('kendaraan.index')->middleware('auth');
+
+
+//Pelanggan
+use App\Http\Controllers\Pelanggan\ProfilePelangganController;
+
+Route::middleware(['auth:pelanggan'])->group(function () {
+    Route::get('/pelanggan/profile', [ProfilePelangganController::class, 'profile'])->name('pelanggan.profile');
+    Route::get('/pelanggan/profile/edit', [ProfilePelangganController::class, 'editProfile'])->name('pelanggan.profile.edit');
+    Route::put('/pelanggan/profile/update', [ProfilePelangganController::class, 'updateProfile'])->name('pelanggan.profile.update');
+});
+
+
+//Dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+//Riwayat
+Route::get('/api/kendaraan-by-pelanggan/{ktp}', function ($ktp) {
+    return Kendaraan::where('id_pelanggan', $ktp)->get();
+});
+Route::resource('riwayat', RiwayatController::class)->middleware(middleware: 'auth');
+Route::post('/riwayat/{id}/selesai', [RiwayatController::class, 'updateStatusToSelesai'])->name('riwayat.selesai');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// require __DIR__ . '/auth.php';
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
+
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+
+
+
+
+
+// Middleware untuk semua route yang memerlukan autentikasi
+Route::middleware('auth')->group(function () {
+    // Rute pelanggan
+    Route::resource('pelanggan', PelangganController::class);
+
+    // Jika ingin menggunakan 'ktp' sebagai parameter unik untuk update pelanggan
+    Route::put('/pelanggan/{pelanggan:ktp}', [PelangganController::class, 'update'])->name('pelanggan.update');
+
+    // Rute kendaraan
+    Route::prefix('kendaraan')->group(function () {
+        Route::get('/create', [KendaraanController::class, 'create'])->name('kendaraan.create');
+        Route::post('/', [KendaraanController::class, 'store'])->name('kendaraan.store');
+    });
+});
