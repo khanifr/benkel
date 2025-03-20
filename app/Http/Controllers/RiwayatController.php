@@ -18,7 +18,7 @@ class RiwayatController extends Controller
     // Tampilkan semua data riwayat
     public function store1(Request $request)
     {
-        $validated = $request->validate([
+         $validated = $request->validate([
             'tanggal' => 'required|date',
             'keluhan' => 'required|string|max:255',
             'penanganan' => 'nullable|string|max:255',

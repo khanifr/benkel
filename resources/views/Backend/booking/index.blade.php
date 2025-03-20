@@ -35,7 +35,7 @@
                                         <th>No</th>
                                         <th>NIK & Nama Pelanggan</th>
                                         <th>Tgl.Booking</th>
-                                        <th>Jam Booking</th>
+                                        <th>Jam Kedatangan</th>
                                         <th>Tgl.Penanganan</th>
                                         <th>Keluhan</th>
                                         <th>No.Antrian</th>

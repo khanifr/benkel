@@ -57,25 +57,23 @@
                     </div>                    
                 </div>
                 <!-- Modal Bootstrap -->
-<!-- Modal Bootstrap dengan Gambar Lebih Besar dan Terpusat -->
-<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Tambahkan modal-lg -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="profileModalLabel">Foto Profil</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body d-flex justify-content-center align-items-center">
-                <img src="{{ asset('storage/pelanggan/' . $pelanggan->foto_profile) ?: asset('default-profile.png') }}" 
-                    alt="Foto Profil" 
-                    class="img-fluid rounded shadow" 
-                    style="max-width: 100%; max-height: 80vh;">
-            </div>
-        </div>
-    </div>
-</div>
-
-                
+                    <!-- Modal Bootstrap dengan Gambar Lebih Besar dan Terpusat -->
+                    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Tambahkan modal-lg -->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="profileModalLabel">Foto Profil</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body d-flex justify-content-center align-items-center">
+                                    <img src="{{ asset('storage/pelanggan/' . $pelanggan->foto_profile) ?: asset('default-profile.png') }}" 
+                                        alt="Foto Profil" 
+                                        class="img-fluid rounded shadow" 
+                                        style="max-width: 100%; max-height: 80vh;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <div class="col-md-6">
                     <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
                         <div class="card-header text-white bg-gradient" style="background: linear-gradient(135deg, #0056b3, #003580);">

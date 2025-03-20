@@ -98,19 +98,19 @@
                             <label><i class="fas fa-cogs"></i> Pilih Sparepart</label>
                             <div>
                                 @foreach($spareparts as $sparepart)
-                                    <div class="form-check">
-                                        <input type="checkbox" name="kode_sparepart[]" value="{{ $sparepart->kode }}" class="form-check-input sparepart-checkbox" id="sparepart_{{ $sparepart->kode }}">
-                                        <label class="form-check-label" for="sparepart_{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
-                                    </div>
-                                    <!-- Input jumlah sparepart -->
-                                    <div class="form-group jumlah-sparepart" id="jumlah_{{ $sparepart->kode }}" style="display: none; margin-left: 20px;">
-                                        <label>Jumlah</label>
-                                        <input type="number" name="jumlah_sparepart[]" class="form-control jumlah-input" min="1" value="1">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input type="checkbox" name="kode_sparepart[]" value="{{ $sparepart->kode }}" class="form-check-input" id="sparepart_{{ $sparepart->kode }}">
+                                        <label class="form-check-label ml-2" for="sparepart_{{ $sparepart->kode }}">
+                                            {{ $sparepart->nama }}
+                                            <small class="text-muted ml-2">(Tersisa: {{ $sparepart->stok }})</small>
+                                        </label>
+                                        <input type="number" name="jumlah_sparepart[]" class="form-control form-control-sm ml-auto" min="1" value="1" style="width: 80px;">
                                     </div>
                                 @endforeach
                             </div>
                         </div>
                     </div>
+                    
                    </div>
 
                    <!-- Row 5: KTP Pelanggan & Status -->

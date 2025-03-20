@@ -154,6 +154,12 @@
                             <a class="nav-link" href="{{ route('pelanggan.login') }}">Booking</a>
                         @endauth
                     </li>
+
+                    <li class="nav-item me-3">
+                        @auth('pelanggan')
+                            <a class="nav-link" href="{{ route('pelanggan.riwayat') }}">History Service</a>
+                        @endauth
+                    </li>
                 </ul>
             </div>
             <div class="d-flex align-items-center">
