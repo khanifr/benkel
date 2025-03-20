@@ -1,0 +1,13 @@
+Jika ingin mengupdate project ke GitHub lagi setelah ada perubahan baru, cukup jalankan:
+
+git add .
+git commit -m "Deskripsi perubahan"
+git push
+
+
+//cihuy
+
+
+Jika ingin menarik perubahan terbaru dari GitHub ke lokal:
+
+git pull origin main
